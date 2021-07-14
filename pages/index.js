@@ -27,16 +27,57 @@ function ProfileSideBar(propriedades){
   )
 }
 
+function ProfileRelationsBox(propriedades) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {propriedades.title} ({propriedades.items.length})
+      </h2>
+      <ul>
+        {/* {seguidores.map((itemAtual) => {
+          return (
+            <li key={itemAtual}>
+              <a href={`https://github.com/${itemAtual}.png`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          )
+        })} */}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
 export default function Home() {
+  const usuarioAleatorio = 'thiteago';
   const [comunidades, setComunidades] = React.useState([{
-    id: '298372189371893718931897',
+    id: '12802378123789378912789789123896123', 
     title: 'Eu odeio acordar cedo',
     image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
   }]);
-  const usuarioAleatorio = 'Thiteago';
-  const pessoasFavoritas = ['Luizgpp', 'LucasSilvaDosSantos', 'marcobrunodev', 'J-AugustoManzano', 'barbarabizinoto', 'Jessysnt'];
 
+  console.log('Nosso teste', );
+  const pessoasFavoritas = [
+    'luizgpp',
+    'omariosouto',
+    'peas',
+    'rafaballerini',
+    'marcobrunodev',
+    'felipefialho',
+  ]
+  const [seguidores, setSeguidores] = React.useState([]);
+  React.useEffect(function() {
+    fetch('https://api.github.com/users/thiteago/followers')
+    .then(function (respostaDoServidor) {
+      return respostaDoServidor.json();
+    })
+    .then(function(respostaCompleta) {
+      setSeguidores(respostaCompleta);
+    })
+  }, [])
 
+  console.log('seguidores antes do return', seguidores);
 
   return (
     <>
@@ -92,21 +133,7 @@ export default function Home() {
       </div>
       
       <div className="profileRelationArea" style={{gridArea: 'profileRelationArea'}}>
-      <ProfileRelationsBoxWrapper>
-      <ul>
-            {comunidades.map((itemAtual) => {
-              return (
-                <li key={itemAtual.id}>
-                  <a href={`/users/${itemAtual.title}`}>
-                  <img src={itemAtual.image} />
-                  <span>{itemAtual.title}</span>
-                </a>
-                </li>
-
-              )
-              })}
-          </ul>
-      </ProfileRelationsBoxWrapper>
+        <ProfileRelationsBox title="Seguidores" items={seguidores}></ProfileRelationsBox>
         <ProfileRelationsBoxWrapper>
           <h2 className="smallTitle">
             Pessoas da Comunidade ({pessoasFavoritas.length})
